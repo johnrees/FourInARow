@@ -8,6 +8,7 @@
 
 #import "GameComponents.h"
 #import "Chip.h"
+#import "SimpleAudioEngine.h"
 
 @implementation BoardLayer
 @synthesize columns, rows;
@@ -18,6 +19,7 @@
 @synthesize boardArray;
 @synthesize chips;
 @synthesize gameEnded;
+@synthesize popup;
 
 typedef enum{
 	All,
@@ -37,15 +39,25 @@ typedef enum{
 	{
 		self.columns = _columns;
 		self.rows = _rows;
-		chips = [NSMutableArray new];
-				
+		chips = [[NSMutableArray alloc] init];
+
 		spritesheet = [CCSpriteBatchNode batchNodeWithFile:@"FourAssets.png"];
 		[self addChild:spritesheet];
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"FourAssets.plist"];
 		[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+		
+		[self preloadSoundEffects];
+		[self makePopup];
 		[self makeBoard];
 	}
 	return self;
+}
+
+- (void) preloadSoundEffects
+{
+	[[SimpleAudioEngine sharedEngine] preloadEffect:@"drop.wav"];
+	[[SimpleAudioEngine sharedEngine] preloadEffect:@"hit.wav"];
+	[[SimpleAudioEngine sharedEngine] preloadEffect:@"end.wav"];
 }
 
 - (int)valueOfHoleAtC:(int)c r:(int)r
@@ -115,54 +127,63 @@ typedef enum{
 }
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
-//	CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
-	currentChip.isBeingDragged = NO;
-	if (activeColumn >= 0)
-	{
-		for (uint row = 0; row < rows; row++) {
+	if (currentChip.isBeingDragged) {
+		currentChip.isBeingDragged = NO;
+		if (activeColumn >= 0)
+		{
+			for (uint row = 0; row < rows; row++) {
 
-			if (boardHoles[activeColumn][row] == HoleEmpty){			
-				
-				CGPoint newPosition = ccpAdd(ccp(activeColumn*40,row*40),
-																			ccp(board.position.x+20,board.position.y+20));
-				
-				float time = (rows-row);
-				time = time/10;
-				CCLOG(@"pp%i-%i=%f",rows,row,time);
-				
-				id fall = [CCMoveTo actionWithDuration:time position:newPosition];
-				[currentChip runAction:fall];
-				
-				int status;
-				if ([currentChip isKindOfClass:[Player1Chip class]])
-					status = Player1;
-				else
-					status = Player2;
-				
-				boardHoles[activeColumn][row] = status;
-				
-				[self checkWins];
-				[self newChip];
-				break;
+				if (boardHoles[activeColumn][row] == HoleEmpty){			
+					
+					CGPoint newPosition = ccpAdd(ccp(activeColumn*40,row*40),
+																				ccp(board.position.x+20,board.position.y+20));
+					
+					float time = (rows-row);
+					time = time/16;
+					CCLOG(@"pp%i-%i=%f",rows,row,time);
+					
+					id fall = [CCMoveTo actionWithDuration:time position:newPosition];									 
+					id checkWins = [CCCallFuncN actionWithTarget:self selector:@selector(checkWins)];
+					
+					[[SimpleAudioEngine sharedEngine] playEffect:@"drop.wav"];
+					
+					[currentChip runAction:[CCSequence actions:fall,checkWins, nil]];
+					
+					int status;
+					if ([currentChip isKindOfClass:[Player1Chip class]])
+						status = Player1;
+					else
+						status = Player2;
+					
+					boardHoles[activeColumn][row] = status;
+					break;
+				}
 			}
 		}
-		
-		
+		else
+			currentChip.position = currentChip.startPosition;
 	}
-	else
-		currentChip.position = ccp(currentChip.position.x,currentChip.position.y - (currentChip.textureRect.size.height * (rows + 1)) );
+}
+
+-(void)makePopup {
+	popup = [[UIAlertView alloc] init];
+	[popup setDelegate:self];
+	[popup setTitle:@"You Win!"];
+	[popup setMessage:@"Play Again?"];
+	[popup addButtonWithTitle:@"Yes"];
+//[popup addButtonWithTitle:@"Human vs Human"];
 }
 
 -(void)winPopup {
+	int status;
+	if ([currentChip isKindOfClass:[Player1Chip class]])
+		[popup setTitle:@"Player 1 Wins!"];
+	else
+		[popup setTitle:@"Player 2 Wins!"];
+
+	[[SimpleAudioEngine sharedEngine] playEffect:@"end.wav"];
 	gameEnded = TRUE;
-	UIAlertView* dialog = [[UIAlertView alloc] init];
-	[dialog setDelegate:self];
-	[dialog setTitle:@"You Win!"];
-	[dialog setMessage:@"Play Another Game?"];
-	[dialog addButtonWithTitle:@"Yes"];
-	[dialog addButtonWithTitle:@"No"];
-	[dialog show];
-	[dialog release];
+	[popup show];
 }
 
 - (void) alertView:(UIAlertView *)alert clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -175,6 +196,8 @@ typedef enum{
 
 -(void) checkWins
 {
+	[[SimpleAudioEngine sharedEngine] playEffect:@"hit.wav"];
+	
 	for (int col = 0; col < columns; col++) {		
 		for (int row = 0; row < rows; row++) {
 			[self checkForWinAtCol:col andRow:row+1 andCount:0 andDirection:Top];//t
@@ -187,6 +210,8 @@ typedef enum{
 			[self checkForWinAtCol:col-1 andRow:row+1 andCount:0 andDirection:TopLeft];//tl
 		}
 	}
+	
+	[self newChip];
 }
 	
 
@@ -231,6 +256,12 @@ typedef enum{
 		}
 	}
 	}
+}
+
+- (void) dealloc
+{
+	[popup dealloc];
+	[super dealloc];
 }
 
 - (void) traceBoard

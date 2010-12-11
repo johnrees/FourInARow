@@ -69,6 +69,9 @@
 		5213393312B0062E008DB69F /* FourAssets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5213393112B0062E008DB69F /* FourAssets.plist */; };
 		5213393412B0062E008DB69F /* FourAssets.png in Resources */ = {isa = PBXBuildFile; fileRef = 5213393212B0062E008DB69F /* FourAssets.png */; };
 		523A40EB12B1326F0083A828 /* Chip.m in Sources */ = {isa = PBXBuildFile; fileRef = 523A40EA12B1326F0083A828 /* Chip.m */; };
+		52832CD912B38A7C00C866E5 /* drop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 52832CD712B38A7C00C866E5 /* drop.wav */; };
+		52832CDA12B38A7C00C866E5 /* hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = 52832CD812B38A7C00C866E5 /* hit.wav */; };
+		52832D5812B397BF00C866E5 /* end.wav in Resources */ = {isa = PBXBuildFile; fileRef = 52832D5712B397BF00C866E5 /* end.wav */; };
 		DC6640030F83B3EA000B3E49 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC6640020F83B3EA000B3E49 /* AudioToolbox.framework */; };
 		DC6640050F83B3EA000B3E49 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC6640040F83B3EA000B3E49 /* OpenAL.framework */; };
 		DCCBF1B70F6022AE0040855A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCCBF1B60F6022AE0040855A /* CoreGraphics.framework */; };
@@ -326,6 +329,9 @@
 		5213393212B0062E008DB69F /* FourAssets.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FourAssets.png; sourceTree = "<group>"; };
 		523A40E912B1326F0083A828 /* Chip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chip.h; sourceTree = "<group>"; };
 		523A40EA12B1326F0083A828 /* Chip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Chip.m; sourceTree = "<group>"; };
+		52832CD712B38A7C00C866E5 /* drop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = drop.wav; sourceTree = "<group>"; };
+		52832CD812B38A7C00C866E5 /* hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hit.wav; sourceTree = "<group>"; };
+		52832D5712B397BF00C866E5 /* end.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = end.wav; sourceTree = "<group>"; };
 		DC6640020F83B3EA000B3E49 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DC6640040F83B3EA000B3E49 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		DCCBF1B60F6022AE0040855A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -721,8 +727,11 @@
 				E02BB4FE126CA50F006E46A2 /* Icon@2x.png */,
 				E02BB4FF126CA50F006E46A2 /* Icon-Small@2x.png */,
 				E02BB500126CA50F006E46A2 /* Icon-Small.png */,
+				52832D5712B397BF00C866E5 /* end.wav */,
 				E02BB501126CA50F006E46A2 /* Icon-Small-50.png */,
 				5213393112B0062E008DB69F /* FourAssets.plist */,
+				52832CD712B38A7C00C866E5 /* drop.wav */,
+				52832CD812B38A7C00C866E5 /* hit.wav */,
 				5213393212B0062E008DB69F /* FourAssets.png */,
 				E02BB502126CA50F006E46A2 /* Icon-72.png */,
 				50F414EC1069373D002A0D5E /* Default.png */,
@@ -1138,6 +1147,9 @@
 				E02BB763126CC1E0006E46A2 /* iTunesArtwork in Resources */,
 				5213393312B0062E008DB69F /* FourAssets.plist in Resources */,
 				5213393412B0062E008DB69F /* FourAssets.png in Resources */,
+				52832CD912B38A7C00C866E5 /* drop.wav in Resources */,
+				52832CDA12B38A7C00C866E5 /* hit.wav in Resources */,
+				52832D5812B397BF00C866E5 /* end.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

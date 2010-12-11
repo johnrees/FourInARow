@@ -12,6 +12,7 @@
 	int boardHoles[7][6];
 	NSMutableArray *chips;
 	BOOL gameEnded;
+	UIAlertView* popup;
 }
 
 - (id) initWithColumns:(int)columns andRows:(int)rows;
@@ -28,6 +29,7 @@
 @property (nonatomic, retain) NSMutableArray *chips;
 @property (nonatomic, retain) CCSpriteBatchNode *spritesheet;
 @property (nonatomic, retain) Chip *currentChip;
+@property (nonatomic, retain) UIAlertView *popup;
 @property (nonatomic) uint columns, rows;
 @property (nonatomic) int activeColumn, boardArray;
 @property (nonatomic) BOOL gameEnded;
